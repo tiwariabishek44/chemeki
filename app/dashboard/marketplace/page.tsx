@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Plus, MapPin, Clock, Tag } from "lucide-react"
+import { Plus, MapPin, Clock, Tag, Filter } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 // Mock data for marketplace listings (products)
@@ -22,6 +22,7 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Furniture",
+    productType: "Complex",
   },
   {
     id: 2,
@@ -35,19 +36,21 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Electronics",
+    productType: "Complex",
   },
   {
     id: 3,
-    title: "Mountain Bike",
-    price: "Rs. 25,000",
+    title: "Local Organic Vegetables",
+    price: "Rs. 250/kg",
     location: "Bhaktapur, Ward 5",
-    postedTime: "3 days ago",
+    postedTime: "3 hours ago",
     image: "/placeholder.svg?height=300&width=300",
     seller: {
-      name: "Bikash Shrestha",
+      name: "Shanti Tamang",
       avatar: "/placeholder.svg?height=40&width=40",
     },
-    category: "Sports",
+    category: "Food",
+    productType: "Local",
   },
   {
     id: 4,
@@ -61,6 +64,7 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Clothing",
+    productType: "Local",
   },
   {
     id: 5,
@@ -74,6 +78,7 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Appliances",
+    productType: "Complex",
   },
   {
     id: 6,
@@ -87,19 +92,21 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Art",
+    productType: "Local",
   },
   {
     id: 7,
-    title: "Treadmill - Almost New",
-    price: "Rs. 30,000",
+    title: "Fresh Local Honey",
+    price: "Rs. 650/bottle",
     location: "Kathmandu, Ward 3",
     postedTime: "1 day ago",
     image: "/placeholder.svg?height=300&width=300",
     seller: {
-      name: "Sunil Poudel",
+      name: "Bina Shrestha",
       avatar: "/placeholder.svg?height=40&width=40",
     },
-    category: "Fitness",
+    category: "Food",
+    productType: "Local",
   },
   {
     id: 8,
@@ -113,6 +120,35 @@ const listings = [
       avatar: "/placeholder.svg?height=40&width=40",
     },
     category: "Home Decor",
+    productType: "Local",
+  },
+  {
+    id: 9,
+    title: "Homemade Pickles",
+    price: "Rs. 300/jar",
+    location: "Lalitpur, Ward 6",
+    postedTime: "2 days ago",
+    image: "/placeholder.svg?height=300&width=300",
+    seller: {
+      name: "Gita Pradhan",
+      avatar: "/placeholder.svg?height=40&width=40",
+    },
+    category: "Food",
+    productType: "Local",
+  },
+  {
+    id: 10,
+    title: "Mountain Bike",
+    price: "Rs. 25,000",
+    location: "Bhaktapur, Ward 5",
+    postedTime: "3 days ago",
+    image: "/placeholder.svg?height=300&width=300",
+    seller: {
+      name: "Bikash Shrestha",
+      avatar: "/placeholder.svg?height=40&width=40",
+    },
+    category: "Sports",
+    productType: "Complex",
   },
 ]
 
@@ -126,6 +162,7 @@ const userListings = [
     postedTime: "1 week ago",
     image: "/placeholder.svg?height=300&width=300",
     category: "Furniture",
+    productType: "Complex",
     status: "Active",
   },
   {
@@ -136,12 +173,35 @@ const userListings = [
     postedTime: "2 weeks ago",
     image: "/placeholder.svg?height=300&width=300",
     category: "Clothing",
+    productType: "Local",
+    status: "Active",
+  },
+  {
+    id: 103,
+    title: "Homemade Sel Roti",
+    price: "Rs. 100/piece",
+    location: "Kathmandu, Ward 10",
+    postedTime: "1 day ago",
+    image: "/placeholder.svg?height=300&width=300",
+    category: "Food",
+    productType: "Local",
     status: "Active",
   },
 ]
 
 export default function MarketplacePage() {
   const [activeTab, setActiveTab] = useState("all")
+  const [productFilter, setProductFilter] = useState("all")
+
+  // Filter listings based on the product type filter
+  const filteredListings = productFilter === "all" 
+    ? listings 
+    : listings.filter(listing => listing.productType.toLowerCase() === productFilter.toLowerCase())
+
+  // Filter user listings based on the product type filter
+  const filteredUserListings = productFilter === "all" 
+    ? userListings 
+    : userListings.filter(listing => listing.productType.toLowerCase() === productFilter.toLowerCase())
 
   return (
     <div>
@@ -180,12 +240,40 @@ export default function MarketplacePage() {
         </nav>
       </div>
 
+      {/* Product type filters */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <Button 
+          variant={productFilter === "all" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setProductFilter("all")}
+          className={productFilter === "all" ? "bg-green-500 hover:bg-green-600 text-white" : ""}
+        >
+          All Products
+        </Button>
+        <Button 
+          variant={productFilter === "local" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setProductFilter("local")}
+          className={productFilter === "local" ? "bg-green-500 hover:bg-green-600 text-white" : ""}
+        >
+          Local Products
+        </Button>
+        <Button 
+          variant={productFilter === "complex" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setProductFilter("complex")}
+          className={productFilter === "complex" ? "bg-green-500 hover:bg-green-600 text-white" : ""}
+        >
+          Complex Items
+        </Button>
+      </div>
+
       {/* Main content area */}
       <div className="mb-6">
         {/* All listings tab content */}
         {activeTab === "all" && (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {listings.map((listing) => (
+            {filteredListings.map((listing) => (
               <Link key={listing.id} href={`/dashboard/marketplace/${listing.id}`}>
                 <Card className="overflow-hidden flex flex-col h-full border-gray-200 hover:shadow-md transition-shadow duration-200">
                   <div className="aspect-square relative">
@@ -196,6 +284,9 @@ export default function MarketplacePage() {
                     />
                     <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
                       {listing.category}
+                    </Badge>
+                    <Badge className={`absolute top-2 left-2 ${listing.productType === "Local" ? "bg-blue-100 text-blue-700 border-blue-200" : "bg-purple-100 text-purple-700 border-purple-200"} text-xs px-1.5 py-0.5`}>
+                      {listing.productType}
                     </Badge>
                   </div>
                   <CardContent className="p-2 sm:p-3 flex-grow">
@@ -242,8 +333,8 @@ export default function MarketplacePage() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {userListings.length > 0 ? (
-                userListings.map((listing) => (
+              {filteredUserListings.length > 0 ? (
+                filteredUserListings.map((listing) => (
                   <Link key={listing.id} href={`/dashboard/marketplace/${listing.id}`}>
                     <Card className="overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-md transition-shadow duration-200">
                       <div className="aspect-square relative">
@@ -254,6 +345,9 @@ export default function MarketplacePage() {
                         />
                         <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
                           {listing.category}
+                        </Badge>
+                        <Badge className={`absolute bottom-2 left-2 ${listing.productType === "Local" ? "bg-blue-100 text-blue-700 border-blue-200" : "bg-purple-100 text-purple-700 border-purple-200"} text-xs px-1.5 py-0.5`}>
+                          {listing.productType}
                         </Badge>
                         <Badge className="absolute top-2 left-2 bg-green-600 text-white text-xs px-1.5 py-0.5">
                           {listing.status}
