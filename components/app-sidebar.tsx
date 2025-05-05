@@ -52,6 +52,12 @@ export function AppSidebar() {
       icon: Calendar,
       notifications: 0,
     },
+    {
+      title: "Jobs",
+      href: "/dashboard/jobs",
+      icon: Briefcase,
+      notifications: 0,
+    },
   ]
 
   return (

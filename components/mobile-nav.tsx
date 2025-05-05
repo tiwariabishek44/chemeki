@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Users, ShoppingBag, Calendar, MessageSquare } from "lucide-react"
+import { Home, Users, ShoppingBag, Calendar, MessageSquare, Briefcase } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function MobileNav() {
@@ -23,6 +23,11 @@ export function MobileNav() {
       title: "Market",
       href: "/dashboard/marketplace",
       icon: ShoppingBag,
+    },
+    {
+      title: "Jobs",
+      href: "/dashboard/jobs",
+      icon: Briefcase,
     },
     {
       title: "Events",

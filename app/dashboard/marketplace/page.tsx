@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -185,44 +186,46 @@ export default function MarketplacePage() {
         {activeTab === "all" && (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {listings.map((listing) => (
-              <Card key={listing.id} className="overflow-hidden flex flex-col h-full border-gray-200">
-                <div className="aspect-square relative">
-                  <img
-                    src={listing.image || "/placeholder.svg"}
-                    alt={listing.title}
-                    className="object-cover w-full h-full"
-                  />
-                  <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
-                    {listing.category}
-                  </Badge>
-                </div>
-                <CardContent className="p-2 sm:p-3 flex-grow">
-                  <h3 className="font-medium text-sm sm:text-base truncate">{listing.title}</h3>
-                  <p className="font-bold text-base sm:text-lg text-green-600">{listing.price}</p>
-                  <div className="flex items-center text-xs text-muted-foreground mt-1">
-                    <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
-                    <span className="truncate">{listing.location}</span>
+              <Link key={listing.id} href={`/dashboard/marketplace/${listing.id}`}>
+                <Card className="overflow-hidden flex flex-col h-full border-gray-200 hover:shadow-md transition-shadow duration-200">
+                  <div className="aspect-square relative">
+                    <img
+                      src={listing.image || "/placeholder.svg"}
+                      alt={listing.title}
+                      className="object-cover w-full h-full"
+                    />
+                    <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
+                      {listing.category}
+                    </Badge>
                   </div>
-                  <div className="flex items-center text-xs text-muted-foreground mt-1">
-                    <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
-                    <span>{listing.postedTime}</span>
-                  </div>
-                </CardContent>
-                <CardFooter className="p-2 sm:p-3 pt-0 flex items-center justify-between">
-                  <div className="flex items-center gap-1 sm:gap-2">
-                    <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
-                      <AvatarImage src={listing.seller.avatar || "/placeholder.svg"} alt={listing.seller.name} />
-                      <AvatarFallback>{listing.seller.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-xs text-muted-foreground truncate max-w-[60px] sm:max-w-[80px]">
-                      {listing.seller.name}
+                  <CardContent className="p-2 sm:p-3 flex-grow">
+                    <h3 className="font-medium text-sm sm:text-base truncate">{listing.title}</h3>
+                    <p className="font-bold text-base sm:text-lg text-green-600">{listing.price}</p>
+                    <div className="flex items-center text-xs text-muted-foreground mt-1">
+                      <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                      <span className="truncate">{listing.location}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground mt-1">
+                      <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                      <span>{listing.postedTime}</span>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-2 sm:p-3 pt-0 flex items-center justify-between">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
+                        <AvatarImage src={listing.seller.avatar || "/placeholder.svg"} alt={listing.seller.name} />
+                        <AvatarFallback>{listing.seller.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs text-muted-foreground truncate max-w-[60px] sm:max-w-[80px]">
+                        {listing.seller.name}
+                      </span>
+                    </div>
+                    <span className="h-7 px-2 text-xs text-green-600 border border-green-200 rounded-md flex items-center hover:bg-green-50">
+                      View
                     </span>
-                  </div>
-                  <Button size="sm" variant="outline" className="h-7 px-2 text-xs text-green-600 border-green-200 hover:bg-green-50">
-                    Contact
-                  </Button>
-                </CardFooter>
-              </Card>
+                  </CardFooter>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
@@ -241,41 +244,43 @@ export default function MarketplacePage() {
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {userListings.length > 0 ? (
                 userListings.map((listing) => (
-                  <Card key={listing.id} className="overflow-hidden flex flex-col h-full border border-gray-200">
-                    <div className="aspect-square relative">
-                      <img
-                        src={listing.image || "/placeholder.svg"}
-                        alt={listing.title}
-                        className="object-cover w-full h-full"
-                      />
-                      <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
-                        {listing.category}
-                      </Badge>
-                      <Badge className="absolute top-2 left-2 bg-green-600 text-white text-xs px-1.5 py-0.5">
-                        {listing.status}
-                      </Badge>
-                    </div>
-                    <CardContent className="p-2 sm:p-3 flex-grow">
-                      <h3 className="font-medium text-sm sm:text-base truncate">{listing.title}</h3>
-                      <p className="font-bold text-base sm:text-lg text-green-600">{listing.price}</p>
-                      <div className="flex items-center text-xs text-muted-foreground mt-1">
-                        <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
-                        <span className="truncate">{listing.location}</span>
+                  <Link key={listing.id} href={`/dashboard/marketplace/${listing.id}`}>
+                    <Card className="overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-md transition-shadow duration-200">
+                      <div className="aspect-square relative">
+                        <img
+                          src={listing.image || "/placeholder.svg"}
+                          alt={listing.title}
+                          className="object-cover w-full h-full"
+                        />
+                        <Badge className="absolute top-2 right-2 bg-green-100 text-green-700 border-green-200 text-xs px-1.5 py-0.5">
+                          {listing.category}
+                        </Badge>
+                        <Badge className="absolute top-2 left-2 bg-green-600 text-white text-xs px-1.5 py-0.5">
+                          {listing.status}
+                        </Badge>
                       </div>
-                      <div className="flex items-center text-xs text-muted-foreground mt-1">
-                        <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
-                        <span>{listing.postedTime}</span>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="p-2 sm:p-3 pt-0 flex items-center justify-between">
-                      <Button size="sm" variant="outline" className="h-7 px-2 text-xs text-green-600 border-green-200 hover:bg-green-50">
-                        Edit
-                      </Button>
-                      <Button size="sm" variant="ghost" className="h-7 px-2 text-xs text-red-500 hover:text-red-700 hover:bg-red-50">
-                        Delete
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                      <CardContent className="p-2 sm:p-3 flex-grow">
+                        <h3 className="font-medium text-sm sm:text-base truncate">{listing.title}</h3>
+                        <p className="font-bold text-base sm:text-lg text-green-600">{listing.price}</p>
+                        <div className="flex items-center text-xs text-muted-foreground mt-1">
+                          <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                          <span className="truncate">{listing.location}</span>
+                        </div>
+                        <div className="flex items-center text-xs text-muted-foreground mt-1">
+                          <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                          <span>{listing.postedTime}</span>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="p-2 sm:p-3 pt-0 flex items-center justify-between">
+                        <Button size="sm" variant="outline" className="h-7 px-2 text-xs text-green-600 border-green-200 hover:bg-green-50">
+                          Edit
+                        </Button>
+                        <Button size="sm" variant="ghost" className="h-7 px-2 text-xs text-red-500 hover:text-red-700 hover:bg-red-50">
+                          Delete
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))
               ) : (
                 <div className="col-span-full text-center py-8 px-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
